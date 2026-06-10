@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script  src="js/admin.js" defer type="module"></script>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <title>Admin — Mercado Gourmet</title> 
+</head>
+<body>
+
+<header>
+  <div class="logo">Mercado<span> Gourmet</span></div>
+  <div class="header-right">
+    <span class="admin-badge">Admin</span>
+    <a href="index.html" class="header-link">← Catálogo</a>
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <h2 id="formTitle">✦ Cadastrar Produto</h2>
+
+    <div class="editing-banner" id="editingBanner">
+      Editando produto — <strong id="editingName"></strong>
+    </div>
+
+    <input type="hidden" id="productId" />
+
+    <div class="form-group">
+      <label for="name">Nome do Produto *</label>
+      <input type="text" id="name" placeholder="Ex: Queijo Brie Francês" required />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Descrição</label>
+      <textarea id="description" placeholder="Descreva o produto, origem, características…"></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="price">Preço (R$) *</label>
+        <input type="number" id="price" placeholder="0,00" step="0.01" min="0" required />
+      </div>
+      <div class="form-group">
+        <label for="quantity">Estoque *</label>
+        <input type="number" id="quantity" placeholder="0" min="0" required />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Categoria</label>
+      <input type="text" id="category" placeholder="Ex: Queijos, Vinhos, Frios…" />
+    </div>
+
+    <div class="form-group">
+      <label for="imageFile">Imagem do Produto</label>
+      <div class="upload-area" id="uploadArea">
+        <input type="file" id="imageFile" accept="image/*" />
+        <div class="upload-placeholder" id="uploadPlaceholder">
+          <span class="upload-icon">🖼️</span>
+          <span>Clique ou arraste uma imagem aqui</span>
+          <small>JPG, PNG, WEBP — máx. 2 MB</small>
+        </div>
+        <div class="upload-preview" id="uploadPreview" style="display:none">
+          <img id="previewImg" src="" alt="Preview" />
+          <button type="button" class="btn-remove-img" id="btnRemoveImg">✕ Remover</button>
+        </div>
+      </div>
+
+      <input type="hidden" id="image" />
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" id="btnSubmit">＋ Cadastrar Produto</button>
+      <button class="btn btn-secondary" id="btnCancel" style="display:none">Cancelar edição</button>
+    </div>
+  </aside>
+
+
+  <main class="main">
+    <div class="main-top">
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <h2>Produtos cadastrados</h2>
+        <span class="count-badge" id="countBadge">carregando…</span>
+      </div>
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Buscar…" />
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Preço</th>
+            <th>Estoque</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr class="state-row">
+            <td colspan="5"><span class="spinner"></span> Carregando…</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h3>Excluir produto</h3>
+    <p>Tem certeza que deseja excluir <strong id="deleteProductName"></strong>?
+       Esta ação não pode ser desfeita.</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="btnCancelDelete" style="width:auto">Cancelar</button>
+      <button class="btn btn-danger"    id="btnConfirmDelete">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+</body>
+</html>

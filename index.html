@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="js/index.js" defer type="module"></script>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/index.css" />
+  <title>Mercado Gourmet — Catálogo</title>
+</head>
+<body>
+
+<header>
+  <div class="logo">Mercado<span> Gourmet</span></div>
+  <nav class="header-nav">
+    <a href="admin.html">Área Admin →</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <p class="hero-eyebrow">Produtos selecionados</p>
+  <h1>Nossa <em>curadoria</em><br>de sabores</h1>
+  <p>Produtos artesanais e importados, escolhidos com critério para quem aprecia o que há de melhor.</p>
+</section>
+
+<div class="controls">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Buscar produtos…" />
+  </div>
+</div>
+
+<div class="grid" id="grid">
+  <div class="state-wrap">
+    <div class="spinner"></div>
+    <p>Carregando produtos…</p>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 Mercado Gourmet · Desenvolvido com
+    <a href="https://base-back-dwpz.onrender.com" target="_blank">API Base</a>
+  </p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+
+</body>
+</html>
