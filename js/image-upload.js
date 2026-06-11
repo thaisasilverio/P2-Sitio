@@ -1,22 +1,25 @@
-/* ═══════════════════════════════════════════════
-   image-upload.js — Mercado Gourmet
-   Converte imagem local para base64 com preview
-   ═══════════════════════════════════════════════ */
-
 const MAX_SIZE_MB = 2;
 
-// ── Converte File em base64 ───────────────────────────────
+const CLOUD_NAME  = 'daomcqvpt';
+const PRESET_NAME = 'fotos_contato';
 
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload  = () => resolve(reader.result); // data:image/...;base64,...
-    reader.onerror = () => reject(new Error('Falha ao ler o arquivo.'));
-    reader.readAsDataURL(file);
-  });
+async function uploadParaCloudinary(file) {
+  const data = new FormData();
+  data.append('file', file);
+  data.append('upload_preset', PRESET_NAME);
+
+  const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+  const response = await fetch(url, { method: 'POST', body: data });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `Erro no upload (HTTP ${response.status})`);
+  }
+
+  const link = await response.json();
+  return link.secure_url;
 }
-
-// ── Remove imagem selecionada ─────────────────────────────
 
 export function removeImage() {
   document.getElementById('image').value                     = '';
@@ -25,8 +28,6 @@ export function removeImage() {
   document.getElementById('uploadPreview').style.display     = 'none';
   document.getElementById('uploadPlaceholder').style.display = 'flex';
 }
-
-// ── Exibe o preview e salva base64 no campo oculto ────────
 
 export async function handleImageFile(file, toastFn) {
   if (!file) return;
@@ -41,19 +42,33 @@ export async function handleImageFile(file, toastFn) {
     return;
   }
 
-  try {
-    const base64 = await fileToBase64(file);
+  const localUrl = URL.createObjectURL(file);
+  document.getElementById('previewImg').src                  = localUrl;
+  document.getElementById('uploadPreview').style.display     = 'block';
+  document.getElementById('uploadPlaceholder').style.display = 'none';
 
-    document.getElementById('image').value                     = base64;
-    document.getElementById('previewImg').src                  = base64;
-    document.getElementById('uploadPreview').style.display     = 'block';
-    document.getElementById('uploadPlaceholder').style.display = 'none';
+  const btnRemove = document.getElementById('btnRemoveImg');
+  const originalText = btnRemove.textContent;
+  btnRemove.textContent = '⏳ Enviando…';
+  btnRemove.disabled = true;
+
+  try {
+    const secureUrl = await uploadParaCloudinary(file);
+
+    document.getElementById('image').value    = secureUrl;
+    document.getElementById('previewImg').src = secureUrl;
+    URL.revokeObjectURL(localUrl);
+
+    toastFn('Imagem enviada com sucesso!', 'success');
   } catch (err) {
     toastFn(err.message, 'error');
+    removeImage();
+    URL.revokeObjectURL(localUrl);
+  } finally {
+    btnRemove.textContent = originalText;
+    btnRemove.disabled = false;
   }
 }
-
-// ── Inicializa eventos de upload (chamado pelo admin.js) ───
 
 export function initImageUpload(toastFn) {
   document.getElementById('imageFile').addEventListener('change', e => {

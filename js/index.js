@@ -1,9 +1,6 @@
-// index.js — Mercado Gourmet · Catálogo
-
 const API = 'https://base-back-dwpz.onrender.com';
 let allProducts = [];
 
-// Mostra uma mensagem rápida no topo
 function showToast(msg, isError) {
   const toast = document.getElementById('toast');
   toast.textContent = msg;
@@ -18,28 +15,13 @@ function showToast(msg, isError) {
   }, 3500);
 }
 
-// Formata número como moeda brasileira
 function formatPrice(value) {
   const num = parseFloat(value);
   if (isNaN(num)) return '—';
   return num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
-// Retorna um emoji com base no nome do produto
-function categoryEmoji(name) {
-  name = name.toLowerCase();
-  if (name.includes('queijo'))  return '🧀';
-  if (name.includes('vinho'))   return '🍷';
-  if (name.includes('pão'))     return '🍞';
-  if (name.includes('doce'))    return '🍫';
-  if (name.includes('azeite'))  return '🫒';
-  if (name.includes('cafe'))    return '☕';
-  if (name.includes('carne'))   return '🥩';
-  if (name.includes('fruta'))   return '🍊';
-  return '🛒';
-}
 
-// Mostra os produtos na tela
 function renderProducts(products) {
   const grid = document.getElementById('grid');
   grid.textContent = '';
@@ -47,7 +29,7 @@ function renderProducts(products) {
   if (products.length === 0) {
     const div = document.createElement('div');
     div.className = 'state-wrap';
-    div.textContent = '🔍 Nenhum produto encontrado.';
+    div.textContent = ' Nenhum produto encontrado.';
     grid.appendChild(div);
     return;
   }
@@ -60,13 +42,10 @@ function renderProducts(products) {
     const price   = p.preco || 0;
     const inStock = parseInt(p.estoque) > 0;
     const imgUrl  = p.imagemUrl || '';
-
-    // Card do produto
     const article = document.createElement('article');
     article.className = 'card';
     article.style.animationDelay = (i * 0.05) + 's';
 
-    // Imagem ou emoji
     if (imgUrl) {
       const img = document.createElement('img');
       img.className = 'card-img';
@@ -76,8 +55,6 @@ function renderProducts(products) {
       const placeholder = document.createElement('div');
       placeholder.className = 'card-img-placeholder';
       placeholder.style.display = 'none';
-      placeholder.textContent = categoryEmoji(name);
-
       img.onerror = function() {
         img.style.display = 'none';
         placeholder.style.display = 'flex';
@@ -88,11 +65,9 @@ function renderProducts(products) {
     } else {
       const placeholder = document.createElement('div');
       placeholder.className = 'card-img-placeholder';
-      placeholder.textContent = categoryEmoji(name);
       article.appendChild(placeholder);
     }
 
-    // Corpo do card
     const body = document.createElement('div');
     body.className = 'card-body';
 
@@ -108,13 +83,11 @@ function renderProducts(products) {
       body.appendChild(descEl);
     }
 
-    // Preço
     const priceEl = document.createElement('div');
     priceEl.className = 'price';
     priceEl.textContent = formatPrice(price);
     body.appendChild(priceEl);
 
-    // Badge disponível / esgotado
     const badge = document.createElement('span');
     badge.className = 'badge-stock';
     if (inStock) {
@@ -131,7 +104,6 @@ function renderProducts(products) {
   }
 }
 
-// Busca os produtos na API
 async function loadProducts() {
   const grid = document.getElementById('grid');
   grid.textContent = '';
@@ -162,7 +134,7 @@ async function loadProducts() {
     grid.textContent = '';
     const errDiv = document.createElement('div');
     errDiv.className = 'state-wrap';
-    errDiv.textContent = '⚠️ Não foi possível carregar os produtos.';
+    errDiv.textContent = ' Não foi possível carregar os produtos.';
     grid.appendChild(errDiv);
     showToast('Erro ao carregar produtos.', true);
   }
@@ -184,7 +156,6 @@ function filterProducts(query) {
   return filtered;
 }
 
-// Evento do campo de busca
 document.getElementById('searchInput').addEventListener('input', function() {
   const query = document.getElementById('searchInput').value;
   if (query.trim() === '') {
@@ -194,6 +165,4 @@ document.getElementById('searchInput').addEventListener('input', function() {
   }
 });
 
-// Inicia
 loadProducts();
-setInterval(loadProducts, 30000);
