@@ -93,8 +93,9 @@ Método:
 
 ## Links
 
-- 🌐 GitHub Pages: 
-- 🎥 Vídeo pitch: 
+- 🌐 GitHub Pages: https://thaisasilverio.github.io/P2-Sitio/
+- 🎥 Vídeo pitch: https://canva.link/n2q39j6qefga6tx
+- Repositório: https://github.com/thaisasilverio/P2-Sitio
 - 🔗 Backend: https://base-back-dwpz.onrender.com
 
 ---
